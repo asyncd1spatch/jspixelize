@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Art Converter</title>
+    <script type="module" crossorigin src="/jspixelize/assets/index-Bskfzbi5.js"></script>
+    <link rel="stylesheet" crossorigin href="/jspixelize/assets/index-9_ms71EK.css">
+  </head>
+  <body>
+    <aside class="sidebar" data-component="sidebar">
+      <h1>Pixel Art Converter</h1>
+
+      <div class="controls-panel" data-component="controls">
+        <div class="control-group">
+          <label for="image-input">1. Upload Image</label>
+          <input type="file" id="image-input" accept="image/*" />
+        </div>
+
+        <div class="control-group">
+          <label>2. Palette Source</label>
+          <div class="radio-group" id="palette-mode-group">
+            <label
+              ><input type="radio" name="palette-mode" value="kmeans" checked />
+              Generate (K-Means)</label
+            >
+            <label
+              ><input type="radio" name="palette-mode" value="custom" /> Custom
+              Palette</label
+            >
+          </div>
+        </div>
+
+        <div id="kmeans-options">
+          <div class="control-group">
+            <div class="slider-group">
+              <label for="n-colors">Number of Colors</label>
+              <input type="number" id="n-colors" value="16" min="2" max="64" />
+            </div>
+            <input
+              type="range"
+              id="n-colors-slider"
+              value="16"
+              min="2"
+              max="64"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="fix-palette-input"
+              >Use Reference Image for Palette (Optional)</label
+            >
+            <input type="file" id="fix-palette-input" accept="image/*" />
+            <label class="checkbox-label"
+              ><input type="checkbox" id="no-downscale" /> No downscale for
+              palette extraction</label
+            >
+          </div>
+        </div>
+
+        <div id="custom-options" class="hidden">
+          <div class="control-group">
+            <label for="custom-palette"
+              >Custom Palette (comma-separated hex)</label
+            >
+            <textarea
+              id="custom-palette"
+              rows="3"
+              placeholder="e.g., #FF0000, 00FF00, 0000FF"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="pixelize-label">
+            <input type="checkbox" id="enable-pixelization" checked />
+            3. Pixelize Image
+          </label>
+          <small
+            >Uncheck this to only reduce colors without making the image
+            pixelized.</small
+          >
+        </div>
+
+        <div id="pixelization-options">
+          <div class="control-group">
+            <div class="slider-group">
+              <label for="relative-scale">Pixel Size</label>
+              <input
+                type="number"
+                id="relative-scale"
+                value="1.0"
+                min="0.01"
+                max="10"
+                step="0.05"
+              />
+            </div>
+            <input
+              type="range"
+              id="relative-scale-slider"
+              value="1.0"
+              min="0.01"
+              max="10"
+              step="0.05"
+            />
+            <small
+              >Smaller values = smaller pixels (more detail). Larger values =
+              larger pixels.</small
+            >
+          </div>
+
+          <div class="control-group">
+            <label for="output-size">Final Image Size (Optional)</label>
+            <input
+              type="number"
+              id="output-size"
+              placeholder="e.g., 512 (longest side)"
+            />
+            <small>If blank, uses original image dimensions.</small>
+          </div>
+
+          <div class="control-group">
+            <div class="slider-group">
+              <label for="weight-c">Dark Color Preference</label>
+              <input type="number" id="weight-c" value="0.0" step="0.05" />
+            </div>
+            <input
+              type="range"
+              id="weight-c-slider"
+              value="0.0"
+              min="-2.0"
+              max="2.0"
+              step="0.05"
+            />
+            <small
+              >Positive values prefer darker colors (good for outlines).
+              Negative values prefer lighter colors.</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button id="process-btn">Process Image!</button>
+        <div id="status">Ready. Upload an image to start.</div>
+        <div id="spinner" class="spinner hidden"></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="image-container">
+        <div id="output-container">
+          <div class="placeholder">
+            <p>Upload an image and click "Process" to see the result.</p>
+          </div>
+          <img id="result-image" class="hidden" alt="Processed output" />
+          <div id="result-palette" class="palette-display"></div>
+        </div>
+      </div>
+    </main>
+
+  </body>
+</html>
